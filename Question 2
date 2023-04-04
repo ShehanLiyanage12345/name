@@ -1,0 +1,93 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data; // Data stored in the Node
+    Node* next; // Pointer to the next Node
+
+    // Constructor to initialize the Node
+    Node(int value) {
+        data = value;
+        next = NULL;
+    }
+};
+
+class Stack {
+private:
+    Node* head; // Pointer to the head Node of the Stack
+    Node* top; // Pointer to the top Node of the Stack
+
+public:
+    // Constructor to initialize the Stack
+    Stack() {
+        head = NULL;
+        top = NULL;
+    }
+
+    // Push function to add an element to the Stack
+    void push(int value) {
+        Node* newNode = new Node(value);
+        if (head == NULL) { // Stack is empty
+            head = newNode;
+            top = newNode;
+        }
+        else {
+            top->next = newNode;
+            top = newNode;
+        }
+    }
+
+    // Pop function to remove the top element from the Stack
+    int pop() {
+        if (is_empty()) {
+            cout << "Stack Underflow" << endl;
+            return -1;
+        }
+        int value = top->data;
+        if (top == head) { // Only one Node
+            top = NULL;
+            head = NULL;
+        }
+        else {
+            Node* tmp = head;
+            while (tmp->next != top) { // Iterating to the Node previous to top
+                tmp = tmp->next;
+            }
+            tmp->next = NULL;
+            top = tmp;
+        }
+        return value;
+    }
+
+    // Function to check if the Stack is empty or not
+    bool is_empty() {
+        return top == NULL;
+    }
+
+    // Function to get the size of the Stack
+    int size() {
+        int count = 0;
+        Node* tmp = head;
+        while (tmp != NULL) {
+            count++;
+            tmp = tmp->next;
+        }
+        return count;
+    }
+};
+
+int main() {
+    Stack s;
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    cout << "Size of Stack: " << s.size() << endl;
+    cout << "Top Element: " << s.peek() << endl;
+    cout << "Popped Element: " << s.pop() << endl;
+    cout << "Top Element: " << s.peek() << endl;
+    cout << "Popped Element: " << s.pop() << endl;
+    cout << "Popped Element: " << s.pop() << endl;
+    cout << "Is Stack Empty? " << s.is_empty() << endl;
+    return 0;
+}
